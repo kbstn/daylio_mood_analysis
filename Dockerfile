@@ -1,7 +1,7 @@
 # try to pull slim images to avoid big image sizes
 FROM python:3.8.4-slim
 
-# port to expose the container on
+# port to expose the container on 
 EXPOSE 8505
 
 # The WORKDIR instruction sets the working directory (FOR WITHIN THE IMAGE) for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it in the Dockerfile . Let’s set it to app/ :

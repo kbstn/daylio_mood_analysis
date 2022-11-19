@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun May 15 17:34:13 2022
-
-@author: konrad
+ASAS
+@author: 
 """
 
 import streamlit as st
