@@ -11,7 +11,6 @@ import pandas as pd
 from scipy.stats import zscore
 import plotly.express as px
 
-st.set_page_config(layout="wide")
 
 
 st.title('Upload a Daylio export .csv file')
@@ -52,6 +51,8 @@ if uploaded_file is not None:
     file_container.write(shows)
 
 else:
+    st.set_page_config(layout="wide")
+
     st.info(
         f"""
             👆 Upload a .csv file first. Sample to try: [biostats.csv](https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv)
