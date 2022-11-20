@@ -54,13 +54,13 @@ if uploaded_file is not None:
 
 else:
 
-    st.info(
-        f"""
-            👆 Upload a .csv file first. Sample to try: [biostats.csv](https://people.sc.fsu.edu/~jburkardt/data/csv/biostats.csv)
-            """
-    )
+     st.info(
+         f"""
+             👆 Upload a .csv file first. 
+             """
+     )
 
-    st.stop()
+     st.stop()
     
 
 
