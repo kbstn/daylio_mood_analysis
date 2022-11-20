@@ -16,7 +16,9 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # add this line here will add a ever changing file so every docker build command 
-#will not cahe the line following it
+# will not cahe the line following it
+# https://stackoverflow.com/questions/36996046/how-to-prevent-dockerfile-caching-git-clone
+
 ADD http://www.convert-unix-time.com/api?timestamp=now /tmp/bustcache
 
 RUN git clone https://github.com/kbstn/daylio_mood_analysis.git .
