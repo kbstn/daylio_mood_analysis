@@ -16,7 +16,7 @@ st.set_page_config(layout="wide")
 
 
 st.title('Upload a Daylio export .csv file')
-
+st.text('v.0.1')
 
 
 # we also create a sidebar
