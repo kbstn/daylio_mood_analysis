@@ -17,7 +17,7 @@ services:
       - "traefik.http.routers.mood-ssl.tls.certresolver=http"
       - "traefik.http.routers.mood-ssl.middlewares=default@file"
       - "traefik.http.routers.mood-ssl.service=mood-ssl"
-      - "traefik.http.services.mood-ssl.loadbalancer.server.port=80"
+      - "traefik.http.services.mood-ssl.loadbalancer.server.port=8505"
       - "traefik.docker.network=proxy"
 
 networks:
