@@ -3,8 +3,8 @@ services:
   mood:
     build:
       context: ./
-    expose:
-      - "8505"
+    ports:
+      - 80:8505
     volumes:
       - ./:/app
     networks:
