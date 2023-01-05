@@ -1,0 +1,25 @@
+version: '3'
+services:
+  daylio_mood_analysis:
+    build:
+      context: ./daylio_mood_analysis
+    expose:
+      - "8506"
+    volumes:
+      - ./daylio_mood_analysis:/app
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mood-ssl.entrypoints=https"
+      - "traefik.http.routers.mood-ssl.rule=Host(`mood.koni.monster`)"
+      - "traefik.http.routers.mood-ssl.tls=true"
+      - "traefik.http.routers.mood-ssl.tls.certresolver=http"
+      - "traefik.http.routers.mood-ssl.middlewares=default@file"
+      - "traefik.http.routers.mood-ssl.service=mood-ssl"
+      - "traefik.http.services.mood-ssl.loadbalancer.server.port=80"
+      - "traefik.docker.network=proxy"
+
+networks:
+  proxy:
+    external: true
