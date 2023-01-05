@@ -19,7 +19,3 @@ services:
       - "traefik.http.routers.mood-ssl.service=mood-ssl"
       - "traefik.http.services.mood-ssl.loadbalancer.server.port=8505"
       - "traefik.docker.network=proxy"
-
-networks:
-  proxy:
-    external: true
