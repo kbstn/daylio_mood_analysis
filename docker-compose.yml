@@ -3,8 +3,8 @@ services:
   daylio_mood_analysis:
     build:
       context: ./
-    expose:
-      - "8506"
+    # expose:
+    #   - "8506"
     volumes:
       - ./:/app
     networks:
