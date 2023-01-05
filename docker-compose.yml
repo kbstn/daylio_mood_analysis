@@ -2,11 +2,11 @@ version: '3'
 services:
   daylio_mood_analysis:
     build:
-      context: ./daylio_mood_analysis
+      context: ./
     expose:
       - "8506"
     volumes:
-      - ./daylio_mood_analysis:/app
+      - ./:/app
     networks:
       - proxy
     labels:
