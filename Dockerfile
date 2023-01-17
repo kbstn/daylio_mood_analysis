@@ -7,7 +7,6 @@ EXPOSE 8505
 # The WORKDIR instruction sets the working directory (FOR WITHIN THE IMAGE) for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it in the Dockerfile . Let’s set it to app/ :
 WORKDIR /app
 
-
 # # # # this is only if we want to clone via git
 # potential fix for error 100: https://stackoverflow.com/questions/38002543/apt-get-update-returned-a-non-zero-code-100
 RUN apt-get update && apt-get install -y apt-transport-https
