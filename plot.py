@@ -1,5 +1,7 @@
 import plotly.express as px
 import pandas as pd
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 def create_lineplot(data: pd.DataFrame, y_col: str, title: str, target_line: 
     float = None,target_plot_color: str = '#E1BE6A', target_line_color: str = 'salmon', target_line_width: int = 3,
@@ -59,3 +61,48 @@ def plot_two_df(data1: pd.DataFrame,data2: pd.DataFrame, y_col: str, title: str,
     )
     return fig
    
+def plot_double_axis(df,col1,col2):
+    """
+    This function plots two graphs on the same figure with a secondary y-axis.
+    The first graph is plotted on the primary y-axis (left) and the second graph is plotted on the secondary y-axis (right).
+    The user can enable or disable each graph by clicking on the label.
+
+    Parameters:
+    df (DataFrame): DataFrame containing the data for plotting.
+    col1 (str): Column name of the data for the first graph.
+    col2 (str): Column name of the data for the second graph.
+
+    Returns:
+    Plotly figure object
+    """
+    # Create figure with secondary y-axis
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+    
+    # Add trace for the first graph (col1) to the primary y-axis
+    fig.add_trace(
+        go.Scatter(x=df.index, y=df[col2], name=col2+" data",line=dict(
+                    color='#40B0A6',
+                    width=5)),
+        secondary_y=True)
+
+    # Add trace for the second graph (col2) to the secondary y-axis
+    fig.add_trace(
+            go.Scatter(x=df.index, y=df[col1], name=col1+" data",line_color='#E1BE6A'),
+            secondary_y=False)
+
+    # Add figure title
+    fig.update_layout(
+        title_text="Plot of <b>"+col1+"</b> and <b>"+col2+"</b> (enable or disable graph by clickeing on the label)")
+
+    # Set y-axes titles
+    fig.update_yaxes(title_text="<b>"+col1+"</b> axis", secondary_y=True)
+    fig.update_yaxes(title_text="<b>"+col2+"</b> axis", secondary_y=False)
+    fig.update_layout(plot_bgcolor='white')
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='grey')
+    # Set the range of primary y-axis to [min(col1), max(col1)]
+    fig.update_yaxes(range=[min(df[col1]), max(df[col1])], secondary_y=False)
+    # Add horizontal line at y=0 of the primary y-axis
+    fig.update_layout(shapes=[dict(y0=0, y1=0, x0=min(df.index), x1=max(df.index), line_dash='dot', yref='y2', xref='x')])
+    fig.update_yaxes(showgrid=False, gridwidth=1, gridcolor='grey')
+
+    return fig

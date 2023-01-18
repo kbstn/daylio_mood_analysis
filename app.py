@@ -10,7 +10,9 @@ import streamlit as st
 import pandas as pd
 from scipy.stats import zscore
 import plotly.express as px
-
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
+    
 import processing
 import plot
 
@@ -18,7 +20,7 @@ st.set_page_config(layout="wide")
 
 
 
-st.title('Zscore and more 8-)')
+st.title('Zscore and more :eyes:')
 st.text('v.0.2')
 
 
@@ -75,11 +77,12 @@ else:
 
 ### prepare the data
 mood_data = processing.process_data(shows_mood,mood_dict,window)
+st.write(mood_data['mood_num'].dtype)
 
 
 # create the lineplot
-mood_lineplot = plot.create_lineplot(mood_data,y_col="zscore_smooth",title='avg Zscore of my MOOD',target_line=0,target_line_width=4)
-
+# mood_lineplot = plot.create_lineplot(mood_data,y_col="zscore_smooth",title='avg Zscore of my MOOD',target_line=0,target_line_width=4)
+mood_lineplot = plot.plot_double_axis(mood_data,'mood_num','zscore_smooth')
 st.header('Mood')
 st.plotly_chart(mood_lineplot, use_container_width=True)    
 
@@ -117,6 +120,8 @@ else:
 
 ### prepare the data
 weight_data = shows_weight.copy()
+#drop nan where no weight
+weight_data=weight_data.dropna(subset=['weight'])
 
 weight_data = processing.set_datetimeindex(weight_data,date_col="dateTime")
 
@@ -125,12 +130,12 @@ weight_data = processing.calculate_zscore(weight_data,column='weight')
 
 # calculate rolling average
 weight_data = processing.calculate_rolling_average(weight_data, window_weight)
-
 # create the lineplot
-weight_lineplot = plot.create_lineplot(weight_data,y_col="zscore_smooth",
-title='avg Zscore of my weight',target_line=0,target_line_width=4,
-target_plot_color='#40B0A6')
 
+# weight_lineplot = plot.create_lineplot(weight_data,y_col="zscore_smooth",
+# title='avg Zscore of my weight',target_line=0,target_line_width=4,
+# target_plot_color='#40B0A6')
+weight_lineplot = plot.plot_double_axis(weight_data,'weight','zscore_smooth')
 st.header('Weight')
 st.plotly_chart(weight_lineplot, use_container_width=True)    
 
@@ -139,54 +144,4 @@ combined_lineplot = plot.plot_two_df(mood_data,weight_data,y_col='zscore_smooth'
 
 st.plotly_chart(combined_lineplot, use_container_width=True)    
 
-
-
-# # create a histogram for the data
-# fig_hist = px.histogram(mood_data['mood_num'],title="<b>Histogram of my 'my mood' choices</b>",#er Gender",  "day": "Day of Week", "total_bill": "Receipts"},
-#             # category_orders={"day": ["Thur", "Fri", "Sat", "Sun"], "sex": ["Male", "Female"]},
-#             # color_discrete_map={"Male": "RebeccaPurple", "Female": "MediumPurple"},
-#             template="simple_white"
-#             )
-
-# fig_hist.update_layout({
-# 'plot_bgcolor': 'rgba(0, 0, 0, 0)',
-# 'paper_bgcolor': 'rgba(0, 0, 0, 0)'
-# })
-
-
-# st.plotly_chart(fig_hist, use_container_width=True)    
-
-
-
-# ### barplot for count of votes, grouped by weekday
-# bar_votes = mood_data[['mood','weekday']].groupby('weekday').count().rename(columns={'mood':'Vote_Numbers'})
-
-# ## barplot for count of moods grouped by weekday
-
-
-
-
-
-# # bar_days = mood_data[['mood','weekday']].groupby(['weekday','mood']).count()
-# bar_days = mood_data[mood_data.zscore >0][['mood','weekday']].groupby('weekday').count()
-# ## barplot for count of moods grouped by weekday
-
-# fig_bar = px.bar(
-#     bar_days,
-#     x=bar_days.index,
-#     y="mood",
-#     title="<b>Number of days with zscore > 0</b>",
-#     color_discrete_sequence=["#0083B8"] * len(bar_days),
-#     template="plotly_white",
-# )
-# fig_bar.update_layout(
-#     xaxis=dict(tickmode="linear"),
-#     plot_bgcolor="rgba(0,0,0,0)",
-#     yaxis=(dict(showgrid=False)),
-# )
-# st.plotly_chart(fig_bar, use_container_width=True)    
-
-
-
-# st.write(mood_data)
 
