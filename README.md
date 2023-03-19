@@ -1,6 +1,6 @@
 # Mood Dashboard
 
-In this dashboard you can upload data from the mood tracking app daylio. This app tracks within categories,
+In this [dashboard](https://mood.kbstn.io/) you can upload data from the mood tracking app daylio. This app tracks within categories,
 to get a somewhat meaningful analysis of very subjective mood data we use the following approach:\n
 - map numbers to the moods
 - calculate a zscore that measures how many standard deviations the daily mood choice is from the mean
