@@ -12,7 +12,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.mood-ssl.entrypoints=https"
-      - "traefik.http.routers.mood-ssl.rule=Host(`mood.koni.monster`)"
+      - "traefik.http.routers.mood-ssl.rule=Host(`mood.kbstn.io`)"
       - "traefik.http.routers.mood-ssl.tls=true"
       - "traefik.http.routers.mood-ssl.tls.certresolver=http"
       - "traefik.http.routers.mood-ssl.middlewares=default@file"

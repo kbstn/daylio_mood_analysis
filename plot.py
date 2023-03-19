@@ -50,6 +50,8 @@ def plot_two_df(data1: pd.DataFrame,data2: pd.DataFrame, y_col: str, title: str,
     # Get the range of datetimeindex for both dataframes
     x_range = [min_index, max_index]
     # Plot the two dataframes
+
+    # todo: replace px line with go.scatter to add names and have a legend plotted
     fig = px.line(data1, x=data1.index, y=y_col, range_x=x_range)
     fig.update_traces(line_color='#E1BE6A', line_width=5)
 
@@ -59,6 +61,11 @@ def plot_two_df(data1: pd.DataFrame,data2: pd.DataFrame, y_col: str, title: str,
         plot_bgcolor=plot_bgcolor,
         xaxis=dict(showgrid=grid),
     )
+    fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='grey')
+     # Add figure title
+    fig.update_layout(
+        title_text="Plot of zscores (enable or disable graph by clickeing on the label)")
+
     return fig
    
 def plot_double_axis(df,col1,col2):
@@ -97,7 +104,9 @@ def plot_double_axis(df,col1,col2):
     # Set y-axes titles
     fig.update_yaxes(title_text="<b>"+col1+"</b> axis", secondary_y=True)
     fig.update_yaxes(title_text="<b>"+col2+"</b> axis", secondary_y=False)
-    fig.update_layout(plot_bgcolor='white')
+
+    #make the background transparent
+    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
     fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='grey')
     # Set the range of primary y-axis to [min(col1), max(col1)]
     fig.update_yaxes(range=[min(df[col1]), max(df[col1])], secondary_y=False)

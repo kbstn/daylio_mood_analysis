@@ -20,20 +20,33 @@ st.set_page_config(layout="wide")
 
 
 
-st.title('Zscore and more :eyes:')
-st.text('v.0.2')
+st.title('Check your mood :eyes:')
+st.text('v.0.3')
 
 
 # we also create a sidebar
+st.sidebar.header("About")
+
+st.sidebar.info("""In this dashboard you can upload data from the mood tracking app daylio. This app tracks within categories,
+to get a somewhat meaningful analysis of very subjective mood data we use the following approach:\n
+- map numbers to the moods
+- calculate a zscore that measures how many standard deviations the daily mood choice is from the mean
+- apply a rolling mean to give you more room for interpretations (you can change it at the side bar)\n
+
+In the second part you can upload weight data from openscale and get a similar result (no example yet)""")
+
 st.sidebar.header("Choose settings")
 
 
 option = st.sidebar.selectbox(
      'Who are You?',
-     ('Koni','Flo'  ))
+     ('example','Koni','Flo'  ))
 
 if option == 'Koni':
     mood_dict={"Lausig":1, "Schlecht":2, "Ok":3,"Gut":4, "Super":5}
+
+elif option == 'example':
+    mood_dict={"Awful":1, "Bad":2, "Normal":3,"Good":4, "Amazing":5}
 
 else:
     mood_dict={"awful":1, "bad":2, "meh":3,"mixed/unsure":4, "not bad":5, "good":6, "full relax":7,"rad":8}
@@ -44,7 +57,11 @@ window = st.sidebar.slider("Window for rolling mean of mood", 5, 200, 50)
 
 window_weight = st.sidebar.slider("Window for rolling mean of weight", 5, 200, 50)
 
-st.header('Upload a Daylio export .csv file')
+
+
+
+
+st.header('Upload your own Daylio export .csv file')
 
 # this parts enable filepoload
 uploaded_file = st.file_uploader(
@@ -53,21 +70,16 @@ uploaded_file = st.file_uploader(
         help="To activate 'wide mode', go to the hamburger menu > Settings > turn on 'wide mode'",
     )
 
+
 if uploaded_file is not None:
     file_container = st.expander("Check your uploaded .csv")
     shows_mood = pd.read_csv(uploaded_file)
     uploaded_file.seek(0)
-    file_container.write(shows_mood)
+    #file_container.write(shows_mood)
 
 else:
+    shows_mood = pd.read_csv('daylio_example_corrected.csv')
 
-     st.info(
-         f"""
-             👆 Upload a .csv file first. 
-             """
-     )
-
-     st.stop()
     
 
 # funktion that reads shows_mood.copy and returns a pd dataframe 
@@ -77,7 +89,6 @@ else:
 
 ### prepare the data
 mood_data = processing.process_data(shows_mood,mood_dict,window)
-st.write(mood_data['mood_num'].dtype)
 
 
 # create the lineplot
@@ -144,4 +155,17 @@ combined_lineplot = plot.plot_two_df(mood_data,weight_data,y_col='zscore_smooth'
 
 st.plotly_chart(combined_lineplot, use_container_width=True)    
 
+# # change dowenload file size
+# config = {
+#   'toImageButtonOptions': {
+#     'format': 'png', # one of png, svg, jpeg, webp
+#     'filename': 'custom_image',
+#     'height': 1080,
+#     'width': 1920,
+#     'scale': 1 # Multiply title/legend/axis/canvas sizes by this factor
+#   }
+# }
 
+
+
+# st.plotly_chart(combined_lineplot, use_container_width=False, **{'config': config})
