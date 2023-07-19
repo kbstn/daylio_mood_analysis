@@ -145,15 +145,19 @@ else:
 weight_data = shows_weight.copy()
 
 weight_data = processing.set_datetimeindex(weight_data,date_col="dateTime")
+
 # Step 1: Sort the DataFrame by the datetime index (if not already sorted)
 weight_data.sort_index(inplace=True)
 
-# Step 2: Resample the DataFrame to daily frequency
-weight_data_daily = weight_data.resample('D').asfreq()
+# Step 2: Group by date and aggregate the weight data
+weight_data_daily = weight_data.groupby(weight_data.index.date)['weight'].mean()
 
-# Step 3: Interpolate linearly to fill in the missing data (NaN values)
-weight_data_daily['weight'] = weight_data_daily['weight'].interpolate(method='linear')
+# Step 3: Create a new DataFrame with daily frequency using reindex
+idx = pd.date_range(start=weight_data.index.min(), end=weight_data.index.max(), freq='D')
+weight_data_daily = weight_data_daily.reindex(idx)
 
+# Step 4: Interpolate linearly to fill in the missing data (NaN values)
+weight_data_daily = weight_data_daily.interpolate(method='linear')
 # #drop nan where no weight
 # weight_data=weight_data.dropna(subset=['weight'])
 
