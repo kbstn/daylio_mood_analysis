@@ -158,27 +158,24 @@ weight_data_daily = weight_data_daily.reindex(idx)
 
 # Step 4: Interpolate linearly to fill in the missing data (NaN values)
 weight_data_daily = weight_data_daily.interpolate(method='linear')
-# #drop nan where no weight
-# weight_data=weight_data.dropna(subset=['weight'])
 
-# weight_data = processing.set_datetimeindex(weight_data,date_col="dateTime")
 
 # calculate zscore
-weight_data = processing.calculate_zscore(weight_data,column='weight')
+weight_data_daily = processing.calculate_zscore(weight_data_daily,column='weight')
 
 # calculate rolling average
-weight_data = processing.calculate_rolling_average(weight_data, window_weight)
+weight_data_daily = processing.calculate_rolling_average(weight_data_daily, window_weight)
 # create the lineplot
 
 # weight_lineplot = plot.create_lineplot(weight_data,y_col="zscore_smooth",
 # title='avg Zscore of my weight',target_line=0,target_line_width=4,
 # target_plot_color='#40B0A6')
-weight_lineplot = plot.plot_double_axis(weight_data,'weight','zscore_smooth')
+weight_lineplot = plot.plot_double_axis(weight_data_daily,'weight','zscore_smooth')
 st.header('Weight')
 st.plotly_chart(weight_lineplot, use_container_width=True)    
 
 st.header('Mood and Weight')
-combined_lineplot = plot.plot_two_df(mood_data,weight_data,y_col='zscore_smooth',title='both plots combined',grid=True)
+combined_lineplot = plot.plot_two_df(mood_data,weight_data_daily,y_col='zscore_smooth',title='both plots combined',grid=True)
 
 st.plotly_chart(combined_lineplot, use_container_width=True)    
 
