@@ -61,7 +61,7 @@ def get_daily_mean_data(df):
     Returns:
         pd.DataFrame: The resampled DataFrame with daily mean values.
     """
-    df_daily_mean = df.resample('D').mean().ffill()
+    df_daily_mean = df.resample('D').mean(numeric_only=True).ffill()
     return df_daily_mean
 
 
