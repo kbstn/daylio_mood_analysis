@@ -143,10 +143,20 @@ else:
 
 ### prepare the data
 weight_data = shows_weight.copy()
-#drop nan where no weight
-weight_data=weight_data.dropna(subset=['weight'])
 
-weight_data = processing.set_datetimeindex(weight_data,date_col="dateTime")
+# Step 1: Sort the DataFrame by the datetime index (if not already sorted)
+weight_data.sort_index(inplace=True)
+
+# Step 2: Resample the DataFrame to daily frequency
+weight_data_daily = weight_data.resample('D').asfreq()
+
+# Step 3: Interpolate linearly to fill in the missing data (NaN values)
+weight_data_daily['weight'] = weight_data_daily['weight'].interpolate(method='linear')
+
+# #drop nan where no weight
+# weight_data=weight_data.dropna(subset=['weight'])
+
+# weight_data = processing.set_datetimeindex(weight_data,date_col="dateTime")
 
 # calculate zscore
 weight_data = processing.calculate_zscore(weight_data,column='weight')
