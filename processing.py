@@ -45,7 +45,7 @@ def calculate_rolling_average(df: pd.DataFrame, window: int) -> pd.DataFrame:
 def set_datetimeindex(df: pd.DataFrame,date_col: str) -> pd.DataFrame:
         # set the date column as index
        
-    df.index = pd.to_datetime(df[date_col], format='%Y-%m-%d', format='ISO8601')
+    df.index = pd.to_datetime(df[date_col], format='ISO8601')
     
     return df
 
