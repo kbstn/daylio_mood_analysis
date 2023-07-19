@@ -18,10 +18,8 @@ import plot
 
 st.set_page_config(layout="wide")
 
-
-
 st.title('Check your mood :eyes:')
-st.text('v.0.3c')
+st.text('v.0.4\nupdated interpolation method for missing weigth data')
 
 
 # we also create a sidebar
@@ -53,12 +51,9 @@ else:
 
 # create a slider at the sidebar to change the window for rolling mean
 
-window = st.sidebar.slider("Window for rolling mean of mood", 5, 200, 50)
+window = st.sidebar.slider("Window for rolling mean of mood", 5, 200, 7)
 
-window_weight = st.sidebar.slider("Window for rolling mean of weight", 5, 200, 50)
-
-
-
+window_weight = st.sidebar.slider("Window for rolling mean of weight", 5, 200, 7)
 
 
 st.header('Upload your own Daylio export .csv file')
@@ -80,28 +75,8 @@ if uploaded_file is not None:
 else:
     shows_mood = pd.read_csv('daylio_example_corrected.csv')
 
-    
-
-# funktion that reads shows_mood.copy and returns a pd dataframe 
-# with a datetime index and zscore claculated on a given columns
-# and a zscore_smooth based on a rolling mean driven by a 'window' variable
-
-
 ### prepare the data
 mood_data = processing.process_data(shows_mood,mood_dict,window)
-
-
-# set start and end date for the plots
-# start_date = st.sidebar.date_input('Start date', pre_mood_data.index.min())
-# end_date = st.sidebar.date_input('End date', pre_mood_data.index.max())
-
-# if start_date < end_date:
-#     st.success('Start date: `%s`\n\nEnd date:`%s`' % (start_date, end_date))
-# else:
-#     st.error('Error: End date must fall after start date.')
-
-# mood_data =pre_mood_data.loc[start_date:end_date]
-
 
 # create the lineplot
 # mood_lineplot = plot.create_lineplot(mood_data,y_col="zscore_smooth",title='avg Zscore of my MOOD',target_line=0,target_line_width=4)
@@ -146,36 +121,27 @@ weight_data = shows_weight.copy()
 
 weight_data = processing.set_datetimeindex(weight_data,date_col="dateTime")
 
-# Step 1: Sort the DataFrame by the datetime index (if not already sorted)
-weight_data.sort_index(inplace=True)
+# get daily data
 
-# Step 2: Group by date and aggregate the weight data
-weight_data_daily = weight_data.groupby(weight_data.index.date)['weight'].mean()
-
-# Step 3: Create a new DataFrame with daily frequency using reindex
-idx = pd.date_range(start=weight_data.index.min(), end=weight_data.index.max(), freq='D')
-weight_data_daily = weight_data_daily.reindex(idx)
-
-# Step 4: Interpolate linearly to fill in the missing data (NaN values)
-weight_data_daily = weight_data_daily.interpolate(method='linear')
-
+weight_data_daily = processing.get_daily_mean_data(weight_data)
 
 # calculate zscore
-weight_data = processing.calculate_zscore(weight_data_daily,column='weight')
+weight_data_daily = processing.calculate_zscore(weight_data_daily,column='weight')
 
 # calculate rolling average
-weight_data = processing.calculate_rolling_average(weight_data, window_weight)
+
+weight_data_daily = processing.calculate_rolling_average(weight_data_daily, window_weight)
 # create the lineplot
 
 # weight_lineplot = plot.create_lineplot(weight_data,y_col="zscore_smooth",
 # title='avg Zscore of my weight',target_line=0,target_line_width=4,
 # target_plot_color='#40B0A6')
-weight_lineplot = plot.plot_double_axis(weight_data,'weight','zscore_smooth')
+weight_lineplot = plot.plot_double_axis(weight_data_daily,'weight','zscore_smooth')
 st.header('Weight')
 st.plotly_chart(weight_lineplot, use_container_width=True)    
 
 st.header('Mood and Weight')
-combined_lineplot = plot.plot_two_df(mood_data,weight_data,y_col='zscore_smooth',title='both plots combined',grid=True)
+combined_lineplot = plot.plot_two_df(mood_data,weight_data_daily,y_col='zscore_smooth',title='both plots combined',grid=True)
 
 st.plotly_chart(combined_lineplot, use_container_width=True)    
 

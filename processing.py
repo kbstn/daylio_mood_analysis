@@ -45,10 +45,25 @@ def calculate_rolling_average(df: pd.DataFrame, window: int) -> pd.DataFrame:
 def set_datetimeindex(df: pd.DataFrame,date_col: str) -> pd.DataFrame:
         # set the date column as index
        
-    df.index = pd.to_datetime(df[date_col], format='ISO8601')
+    df.index = pd.to_datetime(df[date_col], format='%Y-%m-%d')
     
     return df
 
+def get_daily_mean_data(df):
+    """
+    Resamples the given DataFrame to calculate the daily mean and fills any missing values using forward filling.
+    
+    Args:
+        df (pd.DataFrame): The DataFrame to be resampled.
+        
+    Returns:
+        pd.DataFrame: The resampled DataFrame with daily mean values.
+    """
+    df_daily_mean = df.resample('D').mean().ffill()
+    return df_daily_mean
+
+
+   
 def process_data(shows: pd.DataFrame, mood_dict: dict, window: int) -> pd.DataFrame:
     """
     Processes the data and adds additional columns to the dataframe.
