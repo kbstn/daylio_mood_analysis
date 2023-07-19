@@ -21,7 +21,7 @@ st.set_page_config(layout="wide")
 
 
 st.title('Check your mood :eyes:')
-st.text('v.0.3')
+st.text('v.0.3a')
 
 
 # we also create a sidebar
@@ -89,6 +89,18 @@ else:
 
 ### prepare the data
 mood_data = processing.process_data(shows_mood,mood_dict,window)
+
+
+# set start and end date for the plots
+# start_date = st.sidebar.date_input('Start date', pre_mood_data.index.min())
+# end_date = st.sidebar.date_input('End date', pre_mood_data.index.max())
+
+# if start_date < end_date:
+#     st.success('Start date: `%s`\n\nEnd date:`%s`' % (start_date, end_date))
+# else:
+#     st.error('Error: End date must fall after start date.')
+
+# mood_data =pre_mood_data.loc[start_date:end_date]
 
 
 # create the lineplot

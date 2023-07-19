@@ -9,14 +9,14 @@ WORKDIR /app
 
 # # # # this is only if we want to clone via git
 # potential fix for error 100: https://stackoverflow.com/questions/38002543/apt-get-update-returned-a-non-zero-code-100
-RUN apt-get update && apt-get install -y apt-transport-https
-RUN apt-get install -y \
-   build-essential \
-   software-properties-common \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install -y apt-transport-https
+# RUN apt-get install -y \
+#    build-essential \
+#    software-properties-common \
+#     git \
+#     && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/kbstn/daylio_mood_analysis.git .
+# RUN git clone https://github.com/kbstn/daylio_mood_analysis.git .
 
 COPY . .
 
