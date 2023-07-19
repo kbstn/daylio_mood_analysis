@@ -45,10 +45,9 @@ def calculate_rolling_average(df: pd.DataFrame, window: int) -> pd.DataFrame:
 def set_datetimeindex(df: pd.DataFrame,date_col: str) -> pd.DataFrame:
         # set the date column as index
        
-    try:
-        df.index = pd.to_datetime(df[date_col], format='%Y-%m-%d')
-    except:
-        df.index = pd.to_datetime(df[date_col], format="%Y-%m-%d %H:%M")
+
+    df.index = pd.to_datetime(df[date_col], format='%Y-%m-%d')
+
     return df
 
 def get_daily_mean_data(df):
@@ -61,7 +60,7 @@ def get_daily_mean_data(df):
     Returns:
         pd.DataFrame: The resampled DataFrame with daily mean values.
     """
-    df_daily_mean = df.resample('D').mean(numeric_only=True).ffill()
+    df_daily_mean = df.resample('D').mean().ffill()
     return df_daily_mean
 
 
