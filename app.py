@@ -144,6 +144,7 @@ else:
 ### prepare the data
 weight_data = shows_weight.copy()
 
+weight_data = processing.set_datetimeindex(weight_data,date_col="dateTime")
 # Step 1: Sort the DataFrame by the datetime index (if not already sorted)
 weight_data.sort_index(inplace=True)
 
