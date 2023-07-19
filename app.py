@@ -21,7 +21,7 @@ st.set_page_config(layout="wide")
 
 
 st.title('Check your mood :eyes:')
-st.text('v.0.3b')
+st.text('v.0.3c')
 
 
 # we also create a sidebar
