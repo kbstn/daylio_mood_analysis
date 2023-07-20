@@ -36,8 +36,19 @@ In the second part you can upload weight data from openscale and get a similar r
 st.sidebar.header("Choose settings")
 
 
-option = st.sidebar.selectbox(
-     'Who are You?',
+
+
+# create a slider at the sidebar to change the window for rolling mean
+
+window = st.sidebar.slider("Window for rolling mean of mood", 5, 200, 7)
+
+window_weight = st.sidebar.slider("Window for rolling mean of weight", 5, 200, 7)
+
+st.markdown('##')
+st.subheader('Mood data')
+
+option = st.selectbox(
+     'Who are You? \n If you use the dayilo default, enter "example"',
      ('example','Koni','Flo'  ))
 
 if option == 'Koni':
@@ -49,32 +60,20 @@ elif option == 'example':
 else:
     mood_dict={"awful":1, "bad":2, "meh":3,"mixed/unsure":4, "not bad":5, "good":6, "full relax":7,"rad":8}
 
-# create a slider at the sidebar to change the window for rolling mean
-
-window = st.sidebar.slider("Window for rolling mean of mood", 5, 200, 7)
-
-window_weight = st.sidebar.slider("Window for rolling mean of weight", 5, 200, 7)
-
-st.markdown('##')
-st.subheader('Mood data')
-
-left1,right1 =st.columns(2)
-left1.text('\n')
-
-left1.text('Upload your own Daylio export .csv file here:')
 
 # this parts enable filepoload
-uploaded_file = right1.file_uploader(
-        "",
+uploaded_file = st.file_uploader(
+        "Upload your own Daylio export .csv file here:",
         key="1",
         help="To activate 'wide mode', go to the hamburger menu > Settings > turn on 'wide mode'",
     )
 
 
 if uploaded_file is not None:
-    file_container = right1.expander("Check your uploaded .csv")
+    file_container = st.expander("Check your uploaded .csv")
     shows_mood = pd.read_csv(uploaded_file)
     uploaded_file.seek(0)
+
     #file_container.write(shows_mood)
 
 else:
@@ -98,21 +97,17 @@ st.plotly_chart(mood_lineplot, use_container_width=True)
 
 st.subheader('Weight')
 
-left2,right2 =st.columns(2)
-left2.text('\n')
-
-left2.text('Upload your openscale export .csv file to check your weight data here:')
 
 # create the same workflow for openscale data
 # this parts enable filepoload
-uploaded_file2 = right2.file_uploader(
-        "",
+uploaded_file2 = st.file_uploader(
+        "Upload your openscale export .csv file to check your weight data here:",
         key="2",
         help="To activate 'wide mode', go to the hamburger menu > Settings > turn on 'wide mode'",
     )
 
 if uploaded_file2 is not None:
-    file_container2 = right2.expander("Check your uploaded .csv")
+    file_container2 = st.expander("Check your uploaded .csv")
     shows_weight = pd.read_csv(uploaded_file2)
     uploaded_file2.seek(0)
     
@@ -161,3 +156,10 @@ st.subheader('Mood and Weight')
 combined_lineplot = plot.plot_two_df(mood_data,weight_data_daily,y_col='Z-Score',title='both plots combined',grid=True,color1='#DE7E21',color2='#2499FF')
 
 st.plotly_chart(combined_lineplot, use_container_width=True)    
+
+
+st.subheader('Check out the data:')
+st.text('mood data:')
+st.write(mood_data)
+st.text('weight data (daily):')
+st.write(weight_data_daily)

@@ -103,8 +103,8 @@ def plot_double_axis(df,col1,col2,color1='#3481C5',color2='#B5B5B5'):
         title_text="Plot of <b>"+col1+"</b> and <b>"+col2+"</b>")
 
     # Set y-axes titles
-    fig.update_yaxes(title_text="<b>"+col2+"</b> axis", secondary_y=True)
-    fig.update_yaxes(title_text="<b>"+col1+"</b> axis", secondary_y=False)
+    fig.update_yaxes(title_text="<b>"+col2+"</b>", secondary_y=True)
+    fig.update_yaxes(title_text="<b>"+col1+"</b>", secondary_y=False)
 
     #make the background transparent
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
