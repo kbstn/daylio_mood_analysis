@@ -35,6 +35,7 @@ def create_lineplot(data: pd.DataFrame, y_col: str, title: str, target_line:
     fig.update_layout(
         plot_bgcolor=plot_bgcolor,
         xaxis=dict(showgrid=grid),
+        
     )
     return fig
 
@@ -59,13 +60,14 @@ def plot_two_df(data1: pd.DataFrame,data2: pd.DataFrame, y_col: str, title: str,
     fig.add_trace(px.line(data2, x=data2.index, y=y_col,range_x=x_range).update_traces(line_color=color1, line_width=5).data[0])
     fig.update_layout(
         plot_bgcolor=plot_bgcolor,
-        xaxis=dict(showgrid=grid),
-    )
+        title_text="Plot of Z-Scores Weight (orange) against Mood (blue)",
+        xaxis=dict(showgrid=grid),)
     fig.update_xaxes(showgrid=True, gridwidth=1, gridcolor='grey')
-     # Add figure title
-    fig.update_layout(
-        title_text="Plot of zscores (enable or disable graph by clickeing on the label)")
+    # changing orientation of the legend
+    fig.update_layout(legend=dict(
+    orientation="h",
 
+    ))  
     return fig
    
 def plot_double_axis(df,col1,col2,color1='#3481C5',color2='#B5B5B5'):
@@ -87,23 +89,22 @@ def plot_double_axis(df,col1,col2,color1='#3481C5',color2='#B5B5B5'):
     
     # Add trace for the first graph (col1) to the primary y-axis
     fig.add_trace(
-        go.Scatter(x=df.index, y=df[col2], name=col2+" data",line=dict(
+        go.Scatter(x=df.index, y=df[col2], name=col2,line=dict(
                     color=color1,
-                    width=5)),
-        secondary_y=True)
+                    width=5)), secondary_y=True)
 
     # Add trace for the second graph (col2) to the secondary y-axis
     fig.add_trace(
-            go.Scatter(x=df.index, y=df[col1], name=col1+" data",line_color=color2),
+            go.Scatter(x=df.index, y=df[col1], name=col1,line_color=color2),
             secondary_y=False)
 
     # Add figure title
     fig.update_layout(
-        title_text="Plot of <b>"+col1+"</b> and <b>"+col2+"</b> (enable or disable graph by clickeing on the label)")
+        title_text="Plot of <b>"+col1+"</b> and <b>"+col2+"</b>")
 
     # Set y-axes titles
-    fig.update_yaxes(title_text="<b>"+col1+"</b> axis", secondary_y=True)
-    fig.update_yaxes(title_text="<b>"+col2+"</b> axis", secondary_y=False)
+    fig.update_yaxes(title_text="<b>"+col2+"</b> axis", secondary_y=True)
+    fig.update_yaxes(title_text="<b>"+col1+"</b> axis", secondary_y=False)
 
     #make the background transparent
     fig.update_layout(paper_bgcolor='rgba(0,0,0,0)',plot_bgcolor='rgba(0,0,0,0)')
@@ -113,5 +114,8 @@ def plot_double_axis(df,col1,col2,color1='#3481C5',color2='#B5B5B5'):
     # Add horizontal line at y=0 of the primary y-axis
     fig.update_layout(shapes=[dict(y0=0, y1=0, x0=min(df.index), x1=max(df.index), line_dash='dot', yref='y2', xref='x')])
     fig.update_yaxes(showgrid=False, gridwidth=1, gridcolor='grey')
+    fig.update_layout(legend=dict(
+    orientation="h",xanchor = "center",  # use center of legend as anchor
+                     x = 0.5)) 
 
     return fig

@@ -18,8 +18,8 @@ import plot
 
 st.set_page_config(layout="wide")
 
-st.title('Check your mood :eyes:')
-st.text('v.0.5\nimproved colormap to be more friendly for everyone')
+st.subheader('Analyze Daylio and Openscale Data :eyes:')
+st.text('v.0.5 (improved colormap to be more friendly for everyone)')
 
 
 # we also create a sidebar
@@ -55,11 +55,16 @@ window = st.sidebar.slider("Window for rolling mean of mood", 5, 200, 7)
 
 window_weight = st.sidebar.slider("Window for rolling mean of weight", 5, 200, 7)
 
+st.markdown('##')
+st.subheader('Mood data')
 
-st.header('Upload your own Daylio export .csv file')
+left1,right1 =st.columns(2)
+left1.text('\n')
+
+left1.text('Upload your own Daylio export .csv file here:')
 
 # this parts enable filepoload
-uploaded_file = st.file_uploader(
+uploaded_file = right1.file_uploader(
         "",
         key="1",
         help="To activate 'wide mode', go to the hamburger menu > Settings > turn on 'wide mode'",
@@ -67,7 +72,7 @@ uploaded_file = st.file_uploader(
 
 
 if uploaded_file is not None:
-    file_container = st.expander("Check your uploaded .csv")
+    file_container = right1.expander("Check your uploaded .csv")
     shows_mood = pd.read_csv(uploaded_file)
     uploaded_file.seek(0)
     #file_container.write(shows_mood)
@@ -81,27 +86,36 @@ shows_mood['full_date'] = pd.to_datetime(shows_mood['full_date'])
 shows_mood.set_index('full_date', inplace=True)
 mood_data = processing.process_data(shows_mood,mood_dict,window)
 
+# rename columns for better readability
+mood_data.rename(columns={'mood_num':'daylio raw','zscore_smooth':'Z-Score'},inplace=True)
 # create the lineplot
 # mood_lineplot = plot.create_lineplot(mood_data,y_col="zscore_smooth",title='avg Zscore of my MOOD',target_line=0,target_line_width=4)
-mood_lineplot = plot.plot_double_axis(mood_data,'mood_num','zscore_smooth',color1='#2499FF')
-st.header('Mood')
+mood_lineplot = plot.plot_double_axis(mood_data,'daylio raw','Z-Score',color1='#2499FF')
+
 st.plotly_chart(mood_lineplot, use_container_width=True)    
 
-st.header('Upload a openscale export .csv file to check your weight data')
+
+
+st.subheader('Weight')
+
+left2,right2 =st.columns(2)
+left2.text('\n')
+
+left2.text('Upload your openscale export .csv file to check your weight data here:')
 
 # create the same workflow for openscale data
 # this parts enable filepoload
-uploaded_file2 = st.file_uploader(
+uploaded_file2 = right2.file_uploader(
         "",
         key="2",
         help="To activate 'wide mode', go to the hamburger menu > Settings > turn on 'wide mode'",
     )
 
 if uploaded_file2 is not None:
-    file_container2 = st.expander("Check your uploaded .csv")
+    file_container2 = right2.expander("Check your uploaded .csv")
     shows_weight = pd.read_csv(uploaded_file2)
     uploaded_file2.seek(0)
-    file_container2.write(shows_weight)
+    
 
 else:
 
@@ -137,29 +151,13 @@ weight_data_daily = processing.calculate_zscore(weight_data_daily,column='weight
 weight_data_daily = processing.calculate_rolling_average(weight_data_daily, window_weight)
 # create the lineplot
 
-# weight_lineplot = plot.create_lineplot(weight_data,y_col="zscore_smooth",
-# title='avg Zscore of my weight',target_line=0,target_line_width=4,
-# target_plot_color='#40B0A6')
-weight_lineplot = plot.plot_double_axis(weight_data_daily,'weight','zscore_smooth',color1='#DE7E21')
-st.header('Weight')
+# rename columns for better labes
+weight_data_daily.rename(columns={'weight':'weight raw (kg)','zscore_smooth':'Z-Score'},inplace=True)
+
+weight_lineplot = plot.plot_double_axis(weight_data_daily,'weight raw (kg)','Z-Score',color1='#DE7E21')
 st.plotly_chart(weight_lineplot, use_container_width=True)    
 
-st.header('Mood and Weight')
-combined_lineplot = plot.plot_two_df(mood_data,weight_data_daily,y_col='zscore_smooth',title='both plots combined',grid=True,color1='#DE7E21',color2='#2499FF')
+st.subheader('Mood and Weight')
+combined_lineplot = plot.plot_two_df(mood_data,weight_data_daily,y_col='Z-Score',title='both plots combined',grid=True,color1='#DE7E21',color2='#2499FF')
 
 st.plotly_chart(combined_lineplot, use_container_width=True)    
-
-# # change dowenload file size
-# config = {
-#   'toImageButtonOptions': {
-#     'format': 'png', # one of png, svg, jpeg, webp
-#     'filename': 'custom_image',
-#     'height': 1080,
-#     'width': 1920,
-#     'scale': 1 # Multiply title/legend/axis/canvas sizes by this factor
-#   }
-# }
-
-
-
-# st.plotly_chart(combined_lineplot, use_container_width=False, **{'config': config})
