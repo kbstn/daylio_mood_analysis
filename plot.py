@@ -112,7 +112,7 @@ def plot_double_axis(df,col1,col2,color1='#3481C5',color2='#B5B5B5'):
     # Set the range of primary y-axis to [min(col1), max(col1)]
     fig.update_yaxes(range=[min(df[col1]), max(df[col1])], secondary_y=False)
     # Add horizontal line at y=0 of the primary y-axis
-    fig.update_layout(shapes=[dict(y0=0, y1=0, x0=min(df.index), x1=max(df.index), line_dash='dot', yref='y2', xref='x')])
+    fig.update_layout(shapes=[dict(y0=0, y1=0, x0=min(df.index), x1=max(df.index), line_dash='dot',line_color='grey', yref='y2', xref='x')])
     fig.update_yaxes(showgrid=False, gridwidth=1, gridcolor='grey')
     fig.update_layout(legend=dict(
     orientation="h",xanchor = "center",  # use center of legend as anchor
