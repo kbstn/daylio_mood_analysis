@@ -38,7 +38,7 @@ def create_lineplot(data: pd.DataFrame, y_col: str, title: str, target_line:
     )
     return fig
 
-def plot_two_df(data1: pd.DataFrame,data2: pd.DataFrame, y_col: str, title: str, plot_bgcolor: str = 'rgba(0,0,0,0)', grid: bool = True):
+def plot_two_df(data1: pd.DataFrame,data2: pd.DataFrame, y_col: str, title: str,color1: str ='#DE7E21',color2: str ='#3481C5', plot_bgcolor: str = 'rgba(0,0,0,0)', grid: bool = True):
 
     # Find the overlapping date range
     overlap_range = pd.merge(data1, data2, left_index=True, right_index=True).index
@@ -53,10 +53,10 @@ def plot_two_df(data1: pd.DataFrame,data2: pd.DataFrame, y_col: str, title: str,
 
     # todo: replace px line with go.scatter to add names and have a legend plotted
     fig = px.line(data1, x=data1.index, y=y_col, range_x=x_range)
-    fig.update_traces(line_color='#E1BE6A', line_width=5)
+    fig.update_traces(line_color=color2, line_width=5)
 
 
-    fig.add_trace(px.line(data2, x=data2.index, y=y_col,range_x=x_range).update_traces(line_color='#40B0A6', line_width=5).data[0])
+    fig.add_trace(px.line(data2, x=data2.index, y=y_col,range_x=x_range).update_traces(line_color=color1, line_width=5).data[0])
     fig.update_layout(
         plot_bgcolor=plot_bgcolor,
         xaxis=dict(showgrid=grid),
@@ -68,7 +68,7 @@ def plot_two_df(data1: pd.DataFrame,data2: pd.DataFrame, y_col: str, title: str,
 
     return fig
    
-def plot_double_axis(df,col1,col2):
+def plot_double_axis(df,col1,col2,color1='#3481C5',color2='#B5B5B5'):
     """
     This function plots two graphs on the same figure with a secondary y-axis.
     The first graph is plotted on the primary y-axis (left) and the second graph is plotted on the secondary y-axis (right).
@@ -88,13 +88,13 @@ def plot_double_axis(df,col1,col2):
     # Add trace for the first graph (col1) to the primary y-axis
     fig.add_trace(
         go.Scatter(x=df.index, y=df[col2], name=col2+" data",line=dict(
-                    color='#40B0A6',
+                    color=color1,
                     width=5)),
         secondary_y=True)
 
     # Add trace for the second graph (col2) to the secondary y-axis
     fig.add_trace(
-            go.Scatter(x=df.index, y=df[col1], name=col1+" data",line_color='#E1BE6A'),
+            go.Scatter(x=df.index, y=df[col1], name=col1+" data",line_color=color2),
             secondary_y=False)
 
     # Add figure title

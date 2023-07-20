@@ -19,7 +19,7 @@ import plot
 st.set_page_config(layout="wide")
 
 st.title('Check your mood :eyes:')
-st.text('v.0.4\nupdated interpolation method for missing weigth data')
+st.text('v.0.5\nimproved colormap to be more friendly for everyone')
 
 
 # we also create a sidebar
@@ -83,7 +83,7 @@ mood_data = processing.process_data(shows_mood,mood_dict,window)
 
 # create the lineplot
 # mood_lineplot = plot.create_lineplot(mood_data,y_col="zscore_smooth",title='avg Zscore of my MOOD',target_line=0,target_line_width=4)
-mood_lineplot = plot.plot_double_axis(mood_data,'mood_num','zscore_smooth')
+mood_lineplot = plot.plot_double_axis(mood_data,'mood_num','zscore_smooth',color1='#3481C5')
 st.header('Mood')
 st.plotly_chart(mood_lineplot, use_container_width=True)    
 
@@ -140,7 +140,7 @@ weight_data_daily = processing.calculate_rolling_average(weight_data_daily, wind
 # weight_lineplot = plot.create_lineplot(weight_data,y_col="zscore_smooth",
 # title='avg Zscore of my weight',target_line=0,target_line_width=4,
 # target_plot_color='#40B0A6')
-weight_lineplot = plot.plot_double_axis(weight_data_daily,'weight','zscore_smooth')
+weight_lineplot = plot.plot_double_axis(weight_data_daily,'weight','zscore_smooth',color1='#DE7E21')
 st.header('Weight')
 st.plotly_chart(weight_lineplot, use_container_width=True)    
 
