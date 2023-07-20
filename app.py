@@ -18,7 +18,7 @@ import plot
 
 st.set_page_config(layout="wide")
 
-st.subheader('Analyze Daylio and Openscale Data :bar_chart:')
+st.subheader('Analyze Daylio & Openscale Data :bar_chart:')
 st.text('v.0.5 (improved colormap to be more friendly for everyone)')
 
 
@@ -101,7 +101,7 @@ st.subheader('Weight data :scales:')
 # create the same workflow for openscale data
 # this parts enable filepoload
 uploaded_file2 = st.file_uploader(
-        "Upload your openscale export .csv file to check your weight data here:",
+        "Upload your openscale export .csv file here:",
         key="2",
         help="To activate 'wide mode', go to the hamburger menu > Settings > turn on 'wide mode'",
     )
