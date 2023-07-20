@@ -83,7 +83,7 @@ mood_data = processing.process_data(shows_mood,mood_dict,window)
 
 # create the lineplot
 # mood_lineplot = plot.create_lineplot(mood_data,y_col="zscore_smooth",title='avg Zscore of my MOOD',target_line=0,target_line_width=4)
-mood_lineplot = plot.plot_double_axis(mood_data,'mood_num','zscore_smooth',color1='#3481C5')
+mood_lineplot = plot.plot_double_axis(mood_data,'mood_num','zscore_smooth',color1='#2499FF')
 st.header('Mood')
 st.plotly_chart(mood_lineplot, use_container_width=True)    
 
@@ -145,7 +145,7 @@ st.header('Weight')
 st.plotly_chart(weight_lineplot, use_container_width=True)    
 
 st.header('Mood and Weight')
-combined_lineplot = plot.plot_two_df(mood_data,weight_data_daily,y_col='zscore_smooth',title='both plots combined',grid=True)
+combined_lineplot = plot.plot_two_df(mood_data,weight_data_daily,y_col='zscore_smooth',title='both plots combined',grid=True,color1='#DE7E21',color2='#2499FF')
 
 st.plotly_chart(combined_lineplot, use_container_width=True)    
 
