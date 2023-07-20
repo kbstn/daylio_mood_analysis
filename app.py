@@ -76,6 +76,9 @@ else:
     shows_mood = pd.read_csv('daylio_example_corrected.csv')
 
 ### prepare the data
+# set datetimeindex, daylio is in standard "YYYY-MM-DD" format, so you can use the pd.to_datetime()
+shows_mood['full_date'] = pd.to_datetime(shows_mood['full_date'])
+shows_mood.set_index('full_date', inplace=True)
 mood_data = processing.process_data(shows_mood,mood_dict,window)
 
 # create the lineplot
@@ -119,7 +122,8 @@ else:
 ### prepare the data
 weight_data = shows_weight.copy()
 
-weight_data = processing.set_datetimeindex(weight_data,date_col="dateTime")
+weight_data['dateTime'] = pd.to_datetime(weight_data['dateTime'], format='%Y-%m-%d %H:%M')
+weight_data.set_index('dateTime', inplace=True)
 
 # get daily data
 

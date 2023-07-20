@@ -80,7 +80,6 @@ def process_data(shows: pd.DataFrame, mood_dict: dict, window: int) -> pd.DataFr
     # make a copy of the input dataframe
     processed_data = shows.copy()
     
-    processed_data = set_datetimeindex(processed_data,date_col="full_date")
     # map moods to numerical values
     processed_data = map_mood_to_num(processed_data, mood_dict)
     
