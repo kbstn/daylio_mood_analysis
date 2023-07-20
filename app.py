@@ -18,7 +18,7 @@ import plot
 
 st.set_page_config(layout="wide")
 
-st.subheader('Analyze Daylio and Openscale Data :eyes:')
+st.subheader('Analyze Daylio and Openscale Data :bar_chart:')
 st.text('v.0.5 (improved colormap to be more friendly for everyone)')
 
 
@@ -45,7 +45,7 @@ window = st.sidebar.slider("Window for rolling mean of mood", 5, 200, 7)
 window_weight = st.sidebar.slider("Window for rolling mean of weight", 5, 200, 7)
 
 st.markdown('##')
-st.subheader('Mood data')
+st.subheader('Mood data :blush:')
 
 option = st.selectbox(
      'Who are You? \n If you use the dayilo default, enter "example"',
@@ -95,7 +95,7 @@ st.plotly_chart(mood_lineplot, use_container_width=True)
 
 
 
-st.subheader('Weight')
+st.subheader('Weight data :scales:')
 
 
 # create the same workflow for openscale data
