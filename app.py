@@ -16,7 +16,8 @@ from plotly.subplots import make_subplots
 import processing
 import plot
 
-st.set_page_config(layout="wide")
+st.set_page_config(page_title = 'Daylio & OpenScale Dashboard', # for google etc
+    page_icon = '🐼',layout="wide")
 
 st.subheader('Analyze Daylio & Openscale Data :bar_chart:')
 st.text('v.0.5 (improved colormap to be more friendly for everyone)')
