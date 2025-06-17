@@ -1,23 +1,25 @@
-version: '3'
 services:
   mood:
-    build:
-      context: ./
+    build: ./
+    env_file: .env
     ports:
-      - 8505:8505
+      - ${STREAMLIT_SERVER_PORT}:${STREAMLIT_SERVER_PORT}
     volumes:
       - ./:/app
     networks:
       - proxy
+    environment:  
+      - STREAMLIT_SERVER_PORT=${STREAMLIT_SERVER_PORT}
+      - STREAMLIT_SERVER_ADDRESS=${STREAMLIT_SERVER_ADDRESS}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.mood-ssl.entrypoints=https"
-      - "traefik.http.routers.mood-ssl.rule=Host(`mood.kbstn.io`)"
+      - "traefik.http.routers.mood-ssl.rule=Host(`${TRAEFIK_HOST}`)"
       - "traefik.http.routers.mood-ssl.tls=true"
       - "traefik.http.routers.mood-ssl.tls.certresolver=http"
       - "traefik.http.routers.mood-ssl.middlewares=default@file"
       - "traefik.http.routers.mood-ssl.service=mood-ssl"
-      - "traefik.http.services.mood-ssl.loadbalancer.server.port=8505"
+      - "traefik.http.services.mood-ssl.loadbalancer.server.port=${STREAMLIT_SERVER_PORT}"
       - "traefik.docker.network=proxy"
 
 networks:
